@@ -177,7 +177,7 @@ public class DuelListener implements Listener {
 	}
 
 	@EventHandler
-	public void onCommandPrepocess(PlayerCommandPreprocessEvent e){
+	public void onCommandPrepocess(PlayerCommandPreprocessEvent e) {
 		if(e.getPlayer().getWorld().getName().equalsIgnoreCase("duel") && !e.getMessage().equalsIgnoreCase("/spawn")){
 			e.setCancelled(true);
 			e.getPlayer().sendMessage("§cVous ne pouvez pas exécuter de commande dans une zone de duel. Faîtes /spawn.");
