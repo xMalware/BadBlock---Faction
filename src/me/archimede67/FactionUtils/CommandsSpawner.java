@@ -1,6 +1,7 @@
 package me.archimede67.FactionUtils;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -17,10 +18,6 @@ public class CommandsSpawner implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if(!(sender instanceof Player)) {
-			sender.sendMessage("Vous devez être un joueur pour executer cette commande !");
-		} else {
-			Player p = (Player) sender;
 		if(args.length == 0) {
 			sender.sendMessage("§4-------------------------------------------------");
 			sender.sendMessage("");
@@ -29,16 +26,22 @@ public class CommandsSpawner implements CommandExecutor {
 			sender.sendMessage("§4• §6Commandes :");
 			sender.sendMessage("");
 			sender.sendMessage("§4• §e/" + label + "§7 - Commande spawner.");
-			sender.sendMessage("§4• §e/" + label + " give <mob>§7 - Se donner 1 spawner avec le mob <mob>.");
-			sender.sendMessage("§4• §e/" + label + " set <mob>§7 - Définir le <mob> sur le spawner que vous regardez.");
+			sender.sendMessage("§4• §e/" + label + " give <player> <mob>§7 - Se donner 1 spawner avec le mob <mob>.");
+			sender.sendMessage("§4• §e/" + label + " set <player> <mob>§7 - Définir le <mob> sur le spawner que vous regardez.");
 			sender.sendMessage("§4• §e/" + label + " list§7 - Liste de tous les mobs.");
 			sender.sendMessage("");
 			sender.sendMessage("§4-------------------------------------------------");
-		} else if(args.length == 2) {
+		} else if(args.length == 3) {
 			if(args[0].equalsIgnoreCase("give")) {
 	    if (sender.hasPermission("spawner.give"))
 	    {
-	      EntityType mob = Main.getEntityType(args[1]);
+	      String playerName = args[1];
+	      Player po = Bukkit.getPlayer(playerName);
+	      if (po == null || !po.isOnline()) {
+	    	  sender.sendMessage("§cErreur: Le joueur '" + playerName + "' n'est pas connecté.");
+	    	  return true;
+	      }
+	      EntityType mob = Main.getEntityType(args[2]);
 	      if(Main.isValide(mob)) {
 	    	  ItemStack spawner = new ItemStack(Material.MOB_SPAWNER, 1);
 	    	  ItemMeta smeta = (ItemMeta) spawner.getItemMeta();
@@ -46,29 +49,35 @@ public class CommandsSpawner implements CommandExecutor {
 	    	  smeta.setDisplayName(ChatUtils.colorReplace("%yellow%" + cap + "%green% spawner"));
 	    	  spawner.setItemMeta(smeta);
 	    	  
-	    	  p.getInventory().addItem(spawner);
+	    	  po.getInventory().addItem(spawner);
 	      } else {
-	    	  p.sendMessage("§cCe mob n'existe pas !");
+	    	  po.sendMessage("§cCe mob n'existe pas !");
 	      }
 	    }
 	    return true;
 		} else if(args[0].equalsIgnoreCase("set")) {
 		    if (sender.hasPermission("spawner.set"))
 		    {
-		      EntityType mob = Main.getEntityType(args[1]);
+			 String playerName = args[1];
+			 Player po = Bukkit.getPlayer(playerName);
+			 if (po == null || !po.isOnline()) {
+			    sender.sendMessage("§cErreur: Le joueur '" + playerName + "' n'est pas connecté.");
+			    return true;
+			 }
+		      EntityType mob = Main.getEntityType(args[2]);
 		      if(Main.isValide(mob)) {		    	  
-		    	  Block b = Main.getSpawner(p);
+		    	  Block b = Main.getSpawner(po);
 		    	  if(b != null) {
 						CreatureSpawner entitySpawner = (CreatureSpawner) b.getState();
 						entitySpawner.setSpawnedType(mob);
 						entitySpawner.update();
-						ChatUtils.sendMessagePlayer(p, "%green%Vous avez changer le spawner en %gold%" + mob.toString().toLowerCase());
+						ChatUtils.sendMessagePlayer(po, "%green%Vous avez changer le spawner en %gold%" + mob.toString().toLowerCase());
 		    	  } else {
-		    		  ChatUtils.sendMessagePlayer(p, "%red%Vous devez regarder un spawner pour executer cette commande !");
+		    		  ChatUtils.sendMessagePlayer(po, "%red%Vous devez regarder un spawner pour executer cette commande !");
 		    		  return true;
 		    	  }
 		      } else {
-		    	  p.sendMessage("§cCe mob n'existe pas !");
+		    	  po.sendMessage("§cCe mob n'existe pas !");
 		      }
 		    }
 		    return true;
@@ -88,16 +97,15 @@ public class CommandsSpawner implements CommandExecutor {
                         result += "%gold%" + type.toString().toLowerCase();
                     	}
                     }
-                    ChatUtils.sendMessagePlayer(p, ChatUtils.colorReplace("%red%Voici la liste de toutes les entitées : " + result + "%red%."));
+                    ChatUtils.sendMessagePlayer(sender, ChatUtils.colorReplace("%red%Voici la liste de toutes les entitées : " + result + "%red%."));
                 }
 			    return true;
 				} else {
-			ChatUtils.sendMessagePlayer(p, ChatUtils.colorReplace("%red%Merci de préciser un mob !"));
+			ChatUtils.sendMessagePlayer(sender, ChatUtils.colorReplace("%red%Merci de préciser un mob !"));
 				}
 		} else {
 			sender.sendMessage("§cErreur: arguments invalides !");
 		}
-	  }
 		return true;
 	}
 
