@@ -53,9 +53,10 @@ public class DuelListener implements Listener {
 			if (event.getAction() != Action.LEFT_CLICK_AIR) 
 				event.setCancelled(true);
 		}
+		
 		Duel duel = Duels.getInstance().getDuelsByPlayer().get(event.getPlayer().getUniqueId());
 
-		if(duel != null && event.getAction() == Action.RIGHT_CLICK_BLOCK){
+		if(duel != null && event.getAction() == Action.RIGHT_CLICK_BLOCK && duel.getState() != DuelState.ENDED){
 			event.setCancelled(true);
 		}
 	}
@@ -182,8 +183,10 @@ public class DuelListener implements Listener {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage("§cVous ne pouvez pas exécuter de commande dans une zone de duel. Faîtes /spawn.");
 		}
+		
 		Duel duel = Duels.getInstance().getDuelsByPlayer().get(e.getPlayer().getUniqueId());
-		if(duel != null && !e.getPlayer().isOp()){
+		
+		if(duel != null && !e.getPlayer().isOp() && duel.getState() != DuelState.ENDED){
 			e.setCancelled(true);
 		}
 	}
