@@ -50,7 +50,7 @@ public class HealthBoard extends FactionObject implements Listener {
 		health = handler.registerNewObjective(objectiveName, "dummy");
 		
 		health.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		health.setDisplayName(ChatUtils.colorReplace("&c❤"));
+		health.setDisplayName(ChatUtils.colorReplace("&c\u2665"));
 	}
 	
 	public void setHealth(Player player){
