@@ -111,7 +111,6 @@ public class DestroyChunkListener extends FactionObject implements Listener{
 	@EventHandler
 	public void onPlaceBlock(BlockPlaceEvent e){
 		if(cancel(getPlayersManager().getPlayer(e.getPlayer()), e.getBlock())){
-			System.out.println("good");
 			ChatUtils.sendMessage(e.getPlayer(), "%red%Vous ne pouvez pas placer de block ici !");
 			e.setCancelled(true);
 		}
