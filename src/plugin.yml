@@ -1,0 +1,13 @@
+name: BadblockFactions
+main: com.lelann.factions.Main
+version: 1.0.0
+authors: ['LeLanN']
+softdepend: ['PermissionsEx', 'MultiWorld']
+commands:
+    factions:
+        description: Commande principale de Badblock Factions.
+        usage: /factions <param>
+        aliases: [f, fac, faction]
+    duel:
+        description: Commande duel
+        usage: /duel <param>
