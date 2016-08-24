@@ -47,8 +47,11 @@ public class DuelListener implements Listener {
 			e.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onInteract(PlayerInteractEvent event){
+		if(event.getPlayer().isOp())
+			return;
+		
 		if(event.getPlayer().getWorld().getName().equalsIgnoreCase("duel")){
 			if (event.getAction() != Action.LEFT_CLICK_AIR) 
 				event.setCancelled(true);
@@ -63,6 +66,9 @@ public class DuelListener implements Listener {
 
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e){
+		if(e.getPlayer().isOp())
+			return;
+		
 		Duel duel = Duels.getInstance().getDuelsByPlayer().get(e.getPlayer().getUniqueId());
 
 		if(duel != null || e.getPlayer().getWorld().getName().equalsIgnoreCase("duel")){
@@ -72,6 +78,9 @@ public class DuelListener implements Listener {
 
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent e){
+		if(e.getPlayer().isOp())
+			return;
+		
 		Duel duel = Duels.getInstance().getDuelsByPlayer().get(e.getPlayer().getUniqueId());
 
 		if(duel != null && !duel.isKeepStuff()) return;
@@ -179,6 +188,9 @@ public class DuelListener implements Listener {
 
 	@EventHandler
 	public void onCommandPrepocess(PlayerCommandPreprocessEvent e) {
+		if(e.getPlayer().isOp())
+			return;
+		
 		if(e.getPlayer().getWorld().getName().equalsIgnoreCase("duel") && !e.getMessage().equalsIgnoreCase("/spawn")){
 			e.setCancelled(true);
 			e.getPlayer().sendMessage("§cVous ne pouvez pas exécuter de commande dans une zone de duel. Faîtes /spawn.");
