@@ -26,21 +26,21 @@ public class AntiDupliUtils {
 
 		int count = 0;
 		
-		if((count = count(inv.getContents(), Material.MONSTER_EGG)) > 12 * mul){
+		if((count = count(inv.getContents(), Material.MONSTER_EGG)) > 24 * mul){
 			ItemStack item = new ItemStack(Material.EGG, 1);
 
 			contents = replace(contents, Material.MONSTER_EGG, item);
 			logDupli(who, where, "Oeufs x" + count);
 		}
 		
-		if((count = count(inv.getContents(), Material.MOB_SPAWNER)) > 4 * mul){
+		if((count = count(inv.getContents(), Material.MOB_SPAWNER)) > 12 * mul){
 			ItemStack item = new ItemStack(Material.ROTTEN_FLESH, 1);
 
 			contents = replace(contents, Material.MOB_SPAWNER, item);
 			logDupli(who, where, "Spawners x" + count);
 		}
 		
-		if((count = count(inv.getContents(), Material.GOLDEN_APPLE)) > 64 * mul){
+		if((count = count(inv.getContents(), Material.GOLDEN_APPLE)) > 128 * mul){
 			ItemStack item = new ItemStack(Material.APPLE, 1);
 
 			contents = replace(contents, Material.GOLDEN_APPLE, item);
